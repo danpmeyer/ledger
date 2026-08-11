@@ -214,7 +214,7 @@ button:focus-visible, input:focus-visible, select:focus-visible{
 /* ============================================================
    CONTENT
    ============================================================ */
-.content{ padding: 36px 40px 60px; max-width: 1200px; }
+.content{ padding: calc(36px + env(safe-area-inset-top)) 40px 60px; max-width: 1200px; }
 
 .view{ display: none; }
 .view.is-active{ display: block; }
@@ -252,13 +252,13 @@ button:focus-visible, input:focus-visible, select:focus-visible{
    ============================================================ */
 .card-grid{
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
   gap: 20px;
 }
 
 .data-grid{
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
   gap: 20px;
 }
 
@@ -338,7 +338,7 @@ button:focus-visible, input:focus-visible, select:focus-visible{
   pointer-events: none;
 }
 .card:not(.is-collapsed) .card-body{
-  padding: 0 20px 20px;
+  padding: 8px 20px 20px;
 }
 .card.is-collapsed .card-body{
   padding: 0 20px;
@@ -567,7 +567,7 @@ button:focus-visible, input:focus-visible, select:focus-visible{
    ============================================================ */
 .stats-grid{
   display:grid;
-  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr));
   gap: 20px;
 }
 .stat-card{
@@ -705,7 +705,7 @@ button:focus-visible, input:focus-visible, select:focus-visible{
   .tab--history.is-active{ border-bottom-color: var(--chastity); }
   .tab--settings.is-active{ border-bottom-color: var(--onanism); }
 
-  .content{ padding: 22px 16px calc(96px + env(safe-area-inset-bottom)); }
+  .content{ padding: calc(22px + env(safe-area-inset-top)) 16px calc(96px + env(safe-area-inset-bottom)); }
 
   .view-head{ align-items: flex-start; }
 }
