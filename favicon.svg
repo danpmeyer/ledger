@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <style>
+    .bg{ fill:#1D222B; }
+    .fg{ fill:#E9E7E2; }
+    @media (prefers-color-scheme: light){
+      .bg{ fill:#FFFFFF; }
+      .fg{ fill:#22262D; }
+    }
+  </style>
+  <rect class="bg" width="64" height="64" rx="14"/>
+  <text class="fg" x="32" y="43" font-family="Georgia, 'Times New Roman', serif" font-size="36" font-weight="700" text-anchor="middle">&#167;</text>
+  <rect x="11"   y="52" width="7" height="4" rx="1" fill="#4FA8A0"/>
+  <rect x="21.5" y="52" width="7" height="4" rx="1" fill="#D1A83F"/>
+  <rect x="32"   y="52" width="7" height="4" rx="1" fill="#C0553C"/>
+  <rect x="42.5" y="52" width="7" height="4" rx="1" fill="#6E82D9"/>
+  <rect x="53"   y="52" width="7" height="4" rx="1" fill="#C15C8E"/>
+</svg>

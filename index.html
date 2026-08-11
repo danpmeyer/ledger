@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Ledger">
+<meta name="theme-color" content="#0F1216" id="meta-theme-color">
+<title>Ledger — Habit Tracker</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="favicon-16.png" sizes="16x16" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<script>
+(function(){
+  try{
+    var t = localStorage.getItem('ledger.theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', t);
+  }catch(e){}
+})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<button class="theme-fab" id="theme-fab" aria-label="Toggle light and dark theme" title="Toggle theme">☾</button>
+
+<div class="app">
+
+  <!-- Signature element: ledger tab navigation -->
+  <nav class="ledger-spine" aria-label="Sections">
+    <div class="spine-head">
+      <span class="spine-title">LEDGER</span>
+    </div>
+    <button class="tab tab--today is-active" data-view="today">
+      <span class="tab-index">01</span><span class="tab-label">Today</span>
+    </button>
+    <button class="tab tab--stats" data-view="stats">
+      <span class="tab-index">02</span><span class="tab-label">Stats</span>
+    </button>
+    <button class="tab tab--history" data-view="history">
+      <span class="tab-index">03</span><span class="tab-label">History</span>
+    </button>
+    <button class="tab tab--settings" data-view="settings">
+      <span class="tab-index">04</span><span class="tab-label">Settings</span>
+    </button>
+    <div class="spine-foot">
+      <span id="date-readout" class="mono"></span>
+    </div>
+  </nav>
+
+  <main class="content">
+
+    <!-- ============ TODAY VIEW ============ -->
+    <section class="view is-active" id="view-today">
+      <header class="view-head">
+        <h1>Today's Entries</h1>
+        <div class="date-picker-wrap">
+          <label for="entry-date" class="field-label">Logging for</label>
+          <input type="date" id="entry-date" class="date-input mono">
+        </div>
+      </header>
+
+      <div class="card-grid" id="today-cards">
+
+        <!-- EXERCISE -->
+        <article class="card" data-accent="exercise">
+          <div class="card-edge"></div>
+          <header class="card-head">
+            <h2>Exercise</h2>
+            <span class="card-eyebrow mono">STRENGTH + RUN</span>
+          </header>
+          <div class="card-body">
+
+            <div class="trend-panel" id="trend-exercise">
+              <div class="trend-title mono">THIS WEEK VS LAST</div>
+              <div class="trend-rows" id="trend-rows-exercise"></div>
+            </div>
+
+            <div class="field-grid field-grid--4">
+              <div class="field">
+                <label for="in-pushups">Push-ups</label>
+                <input type="number" min="0" inputmode="numeric" id="in-pushups" class="mono" placeholder="0">
+              </div>
+              <div class="field">
+                <label for="in-pullups">Pull-ups</label>
+                <input type="number" min="0" inputmode="numeric" id="in-pullups" class="mono" placeholder="0">
+              </div>
+              <div class="field">
+                <label for="in-situps">Sit-ups</label>
+                <input type="number" min="0" inputmode="numeric" id="in-situps" class="mono" placeholder="0">
+              </div>
+              <div class="field">
+                <label for="in-squats">Squats</label>
+                <input type="number" min="0" inputmode="numeric" id="in-squats" class="mono" placeholder="0">
+              </div>
+            </div>
+            <div class="field-grid field-grid--2" style="margin-top:12px">
+              <div class="field">
+                <label for="in-run-time">Run time (min)</label>
+                <input type="number" min="0" step="0.1" inputmode="decimal" id="in-run-time" class="mono" placeholder="0.0">
+              </div>
+              <div class="field">
+                <label for="in-run-dist">Run distance (mi)</label>
+                <input type="number" min="0" step="0.01" inputmode="decimal" id="in-run-dist" class="mono" placeholder="0.00">
+              </div>
+            </div>
+            <button class="btn btn--accent" id="btn-add-exercise">Add to log</button>
+            <div class="card-log" id="log-exercise"></div>
+          </div>
+        </article>
+
+        <!-- READING -->
+        <article class="card" data-accent="reading">
+          <div class="card-edge"></div>
+          <header class="card-head">
+            <h2>Reading</h2>
+            <span class="card-eyebrow mono">PAGES</span>
+          </header>
+          <div class="card-body">
+            <div class="readout-row">
+              <div class="readout">
+                <span class="readout-num mono" id="reading-today-total">0</span>
+                <span class="readout-label">pages today</span>
+              </div>
+            </div>
+
+            <div class="trend-panel" id="trend-reading">
+              <div class="trend-title mono">THIS WEEK VS LAST</div>
+              <div class="trend-rows" id="trend-rows-reading"></div>
+            </div>
+
+            <div class="field-grid field-grid--2">
+              <div class="field">
+                <label for="in-pages">Pages read</label>
+                <input type="number" min="0" inputmode="numeric" id="in-pages" class="mono" placeholder="0">
+              </div>
+            </div>
+            <button class="btn btn--accent" id="btn-add-reading">Add to log</button>
+            <div class="card-log" id="log-reading"></div>
+          </div>
+        </article>
+
+        <!-- WRITING -->
+        <article class="card" data-accent="writing">
+          <div class="card-edge"></div>
+          <header class="card-head">
+            <h2>Writing</h2>
+            <span class="card-eyebrow mono">WORDS</span>
+          </header>
+          <div class="card-body">
+            <div class="readout-row">
+              <div class="readout">
+                <span class="readout-num mono" id="writing-today-total">0</span>
+                <span class="readout-label">words today</span>
+              </div>
+            </div>
+
+            <div class="trend-panel" id="trend-writing">
+              <div class="trend-title mono">THIS WEEK VS LAST</div>
+              <div class="trend-rows" id="trend-rows-writing"></div>
+            </div>
+
+            <div class="field-grid field-grid--2">
+              <div class="field">
+                <label for="in-words">Words written</label>
+                <input type="number" min="0" inputmode="numeric" id="in-words" class="mono" placeholder="0">
+              </div>
+            </div>
+            <button class="btn btn--accent" id="btn-add-writing">Add to log</button>
+            <div class="card-log" id="log-writing"></div>
+          </div>
+        </article>
+
+        <!-- SMOKING -->
+        <article class="card" data-accent="smoking">
+          <div class="card-edge"></div>
+          <header class="card-head">
+            <h2>Smoking</h2>
+            <span class="card-eyebrow mono">CIGARETTES</span>
+          </header>
+          <div class="card-body">
+            <div class="readout-row">
+              <div class="readout">
+                <span class="readout-num mono" id="smoking-today-total">0</span>
+                <span class="readout-label">smoked today</span>
+              </div>
+              <div class="readout readout--goal">
+                <span class="readout-num mono" id="smoking-goal-display">—</span>
+                <span class="readout-label">daily goal</span>
+              </div>
+              <button class="goal-edit-btn" data-goal="smoking" aria-label="Edit smoking goal" title="Edit goal">✎</button>
+            </div>
+            <div class="goal-editor" id="goal-editor-smoking" hidden>
+              <input type="number" min="0" step="0.5" inputmode="decimal" id="edit-goal-smoking" class="mono" placeholder="e.g. 5">
+              <button class="btn-mini" id="save-goal-smoking">Save</button>
+              <button class="btn-mini btn-mini--ghost" id="cancel-goal-smoking">Cancel</button>
+            </div>
+            <div class="tick-bar" id="smoking-tickbar" aria-hidden="true"></div>
+
+            <div class="trend-panel" id="trend-smoking">
+              <div class="trend-title mono">THIS WEEK VS LAST</div>
+              <div class="trend-rows" id="trend-rows-smoking"></div>
+            </div>
+
+            <div class="quick-actions">
+              <button class="btn-quick" id="btn-half-cig">+ ½ cigarette</button>
+              <button class="btn-quick" id="btn-full-cig">+ 1 cigarette</button>
+            </div>
+            <div class="card-log" id="log-smoking"></div>
+          </div>
+        </article>
+
+        <!-- ONANISM -->
+        <article class="card" data-accent="onanism">
+          <div class="card-edge"></div>
+          <header class="card-head">
+            <h2>Self-Control</h2>
+            <span class="card-eyebrow mono">REDUCTION GOAL</span>
+          </header>
+          <div class="card-body">
+            <div class="readout-row">
+              <div class="readout">
+                <span class="readout-num mono" id="onanism-streak">0</span>
+                <span class="readout-label">days since last</span>
+              </div>
+              <div class="readout readout--goal">
+                <span class="readout-num mono" id="onanism-week-total">0</span>
+                <span class="readout-label">this week</span>
+              </div>
+            </div>
+
+            <div class="trend-panel" id="trend-onanism">
+              <div class="trend-title mono">THIS WEEK VS LAST</div>
+              <div class="trend-rows" id="trend-rows-onanism"></div>
+            </div>
+
+            <div class="quick-actions">
+              <button class="btn-quick btn-quick--warn" id="btn-add-onanism">Log occurrence</button>
+              <button class="btn-quick" id="btn-undo-onanism">Undo last</button>
+            </div>
+            <div class="card-log" id="log-onanism"></div>
+          </div>
+        </article>
+
+        <!-- LOVE -->
+        <article class="card" data-accent="chastity">
+          <div class="card-edge"></div>
+          <header class="card-head">
+            <h2>Love</h2>
+            <span class="card-eyebrow mono">WEEKLY GOAL</span>
+          </header>
+          <div class="card-body">
+            <div class="readout-row">
+              <div class="readout">
+                <span class="readout-num mono" id="chastity-week-total">0</span>
+                <span class="readout-label">this week</span>
+              </div>
+              <div class="readout readout--goal">
+                <span class="readout-num mono" id="chastity-goal-display">—</span>
+                <span class="readout-label">weekly goal</span>
+              </div>
+              <button class="goal-edit-btn" data-goal="chastity" aria-label="Edit Love goal" title="Edit goal">✎</button>
+            </div>
+            <div class="goal-editor" id="goal-editor-chastity" hidden>
+              <input type="number" min="0" step="1" inputmode="numeric" id="edit-goal-chastity" class="mono" placeholder="e.g. 2">
+              <button class="btn-mini" id="save-goal-chastity">Save</button>
+              <button class="btn-mini btn-mini--ghost" id="cancel-goal-chastity">Cancel</button>
+            </div>
+            <div class="tick-bar" id="chastity-tickbar" aria-hidden="true"></div>
+
+            <div class="trend-panel" id="trend-chastity">
+              <div class="trend-title mono">THIS WEEK VS LAST</div>
+              <div class="trend-rows" id="trend-rows-chastity"></div>
+            </div>
+
+            <div class="quick-actions">
+              <button class="btn-quick" id="btn-add-chastity">Log occurrence</button>
+              <button class="btn-quick" id="btn-undo-chastity">Undo last</button>
+            </div>
+            <div class="card-log" id="log-chastity"></div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ============ STATS VIEW ============ -->
+    <section class="view" id="view-stats">
+      <header class="view-head">
+        <h1>Stats &amp; Trends</h1>
+        <div class="range-picker">
+          <label for="stats-range" class="field-label">Range</label>
+          <select id="stats-range" class="mono">
+            <option value="7">Last 7 days</option>
+            <option value="30" selected>Last 30 days</option>
+            <option value="90">Last 90 days</option>
+            <option value="365">Last year</option>
+            <option value="all">All time</option>
+          </select>
+        </div>
+      </header>
+
+      <div class="stats-grid" id="stats-grid"></div>
+    </section>
+
+    <!-- ============ HISTORY VIEW ============ -->
+    <section class="view" id="view-history">
+      <header class="view-head">
+        <h1>Full History</h1>
+        <div class="range-picker">
+          <label for="history-filter" class="field-label">Habit</label>
+          <select id="history-filter" class="mono">
+            <option value="all">All</option>
+            <option value="exercise">Exercise</option>
+            <option value="reading">Reading</option>
+            <option value="writing">Writing</option>
+            <option value="smoking">Smoking</option>
+            <option value="onanism">Self-Control</option>
+            <option value="chastity">Love</option>
+          </select>
+        </div>
+      </header>
+      <div class="table-wrap">
+        <table class="log-table" id="history-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Habit</th>
+              <th>Detail</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="history-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============ SETTINGS VIEW ============ -->
+    <section class="view" id="view-settings">
+      <header class="view-head">
+        <h1>Settings</h1>
+      </header>
+
+      <div class="data-grid">
+
+        <article class="card" data-accent="neutral">
+          <div class="card-edge"></div>
+          <header class="card-head">
+            <h2>Appearance</h2>
+            <span class="card-eyebrow mono">THEME</span>
+          </header>
+          <div class="card-body">
+            <p class="card-note">Switch between dark and light. Your choice is remembered on this device.</p>
+            <div class="theme-switch-group">
+              <button class="theme-opt" data-theme-choice="dark" id="theme-opt-dark">Dark</button>
+              <button class="theme-opt" data-theme-choice="light" id="theme-opt-light">Light</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" data-accent="neutral">
+          <div class="card-edge"></div>
+          <header class="card-head">
+            <h2>Export</h2>
+            <span class="card-eyebrow mono">BACKUP</span>
+          </header>
+          <div class="card-body">
+            <p class="card-note">Download everything — every entry and goal — as a single file. Keep it somewhere safe in case the browser's storage is ever cleared.</p>
+            <button class="btn btn--accent" id="btn-export-json">Export as JSON</button>
+            <button class="btn" id="btn-export-csv">Export as CSV</button>
+          </div>
+        </article>
+
+        <article class="card" data-accent="neutral">
+          <div class="card-edge"></div>
+          <header class="card-head">
+            <h2>Import</h2>
+            <span class="card-eyebrow mono">RESTORE</span>
+          </header>
+          <div class="card-body">
+            <p class="card-note">Restore from a previously exported JSON file. This replaces all current data in this browser.</p>
+            <input type="file" id="import-file" accept="application/json" class="file-input">
+            <button class="btn" id="btn-import-json">Import JSON</button>
+            <p class="status-line" id="import-status"></p>
+          </div>
+        </article>
+
+        <article class="card" data-accent="neutral">
+          <div class="card-edge"></div>
+          <header class="card-head">
+            <h2>Reset</h2>
+            <span class="card-eyebrow mono">DANGER</span>
+          </header>
+          <div class="card-body">
+            <p class="card-note">Erase all entries and goals from this browser. Export a backup first — this cannot be undone.</p>
+            <button class="btn btn--danger" id="btn-reset-all">Erase all data</button>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
