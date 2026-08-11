@@ -55,21 +55,14 @@ function setTheme(theme){
   updateThemeUI();
 }
 
-function toggleTheme(){
-  setTheme(getTheme() === 'dark' ? 'light' : 'dark');
-}
-
 function updateThemeUI(){
   const theme = getTheme();
-  const fab = document.getElementById('theme-fab');
-  if(fab) fab.textContent = theme === 'dark' ? '☾' : '☀';
   const dOpt = document.getElementById('theme-opt-dark');
   const lOpt = document.getElementById('theme-opt-light');
   if(dOpt) dOpt.classList.toggle('is-active', theme === 'dark');
   if(lOpt) lOpt.classList.toggle('is-active', theme === 'light');
 }
 
-document.getElementById('theme-fab').addEventListener('click', toggleTheme);
 document.getElementById('theme-opt-dark').addEventListener('click', () => setTheme('dark'));
 document.getElementById('theme-opt-light').addEventListener('click', () => setTheme('light'));
 
@@ -243,6 +236,17 @@ function renderTrends(){
 }
 
 /* ============================================================
+   COLLAPSIBLE CARDS
+   ============================================================ */
+document.querySelectorAll('.card-head[data-toggle]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const card = btn.closest('.card');
+    const collapsed = card.classList.toggle('is-collapsed');
+    btn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+  });
+});
+
+/* ============================================================
    NAVIGATION
    ============================================================ */
 const tabs = document.querySelectorAll('.tab');
@@ -400,16 +404,26 @@ function renderToday(){
     if(e.runDist || e.runTime) parts.push(`run ${e.runDist||0}mi / ${e.runTime||0}min`);
     return parts.join(', ') || '—';
   });
+  const exToday = DATA.entries.exercise.filter(e => e.date === date);
+  const exReps = exToday.reduce((s,e) => s + (e.pushups||0)+(e.pullups||0)+(e.situps||0)+(e.squats||0), 0);
+  const exRunDist = round(exToday.reduce((s,e) => s + (e.runDist||0), 0), 2);
+  let exSummary = 'No entries yet';
+  if(exReps && exRunDist) exSummary = `${exReps} reps · ${exRunDist}mi`;
+  else if(exReps) exSummary = `${exReps} reps today`;
+  else if(exRunDist) exSummary = `${exRunDist}mi run today`;
+  document.getElementById('summary-inline-exercise').textContent = exSummary;
 
   // Reading
   renderMiniLog('reading', 'log-reading', e => `${e.pages} pages`);
   const readingTotal = DATA.entries.reading.filter(e => e.date === date).reduce((s,e) => s + e.pages, 0);
   document.getElementById('reading-today-total').textContent = readingTotal;
+  document.getElementById('summary-inline-reading').textContent = `${readingTotal} pages today`;
 
   // Writing
   renderMiniLog('writing', 'log-writing', e => `${e.words} words`);
   const writingTotal = DATA.entries.writing.filter(e => e.date === date).reduce((s,e) => s + e.words, 0);
   document.getElementById('writing-today-total').textContent = writingTotal;
+  document.getElementById('summary-inline-writing').textContent = `${writingTotal} words today`;
 
   // Smoking
   renderMiniLog('smoking', 'log-smoking', e => `+${e.amount} cigarette${e.amount===1?'':'s'}`);
@@ -419,6 +433,8 @@ function renderToday(){
   document.getElementById('smoking-goal-display').textContent = smokingGoal != null ? smokingGoal : '—';
   const smokingBar = document.getElementById('smoking-tickbar');
   smokingBar.style.setProperty('--fill', smokingGoal ? Math.min(100, (smokingTotal/smokingGoal)*100) + '%' : '0%');
+  document.getElementById('summary-inline-smoking').textContent =
+    smokingGoal != null ? `${smokingTotal} / ${smokingGoal} today` : `${smokingTotal} today`;
 
   // Onanism
   renderMiniLog('onanism', 'log-onanism', e => 'logged');
@@ -433,6 +449,8 @@ function renderToday(){
   const [wkStart, wkEnd] = weekRange(date);
   const onanismWeek = DATA.entries.onanism.filter(e => dateInRange(e.date, wkStart, wkEnd)).length;
   document.getElementById('onanism-week-total').textContent = onanismWeek;
+  document.getElementById('summary-inline-onanism').textContent =
+    streakDays === '—' ? 'No entries yet' : `${streakDays}d since last`;
 
   // Love
   renderMiniLog('chastity', 'log-chastity', e => 'logged');
@@ -442,6 +460,8 @@ function renderToday(){
   document.getElementById('chastity-goal-display').textContent = chastityGoal != null ? chastityGoal : '—';
   const chastityBar = document.getElementById('chastity-tickbar');
   chastityBar.style.setProperty('--fill', chastityGoal ? Math.min(100, (chastityWeek/chastityGoal)*100) + '%' : '0%');
+  document.getElementById('summary-inline-chastity').textContent =
+    chastityGoal != null ? `${chastityWeek} / ${chastityGoal} this wk` : `${chastityWeek} this wk`;
 
   renderTrends();
 }

@@ -28,8 +28,6 @@
 </head>
 <body>
 
-<button class="theme-fab" id="theme-fab" aria-label="Toggle light and dark theme" title="Toggle theme">☾</button>
-
 <div class="app">
 
   <!-- Signature element: ledger tab navigation -->
@@ -69,12 +67,16 @@
       <div class="card-grid" id="today-cards">
 
         <!-- EXERCISE -->
-        <article class="card" data-accent="exercise">
+        <article class="card is-collapsed" data-accent="exercise">
           <div class="card-edge"></div>
-          <header class="card-head">
-            <h2>Exercise</h2>
-            <span class="card-eyebrow mono">STRENGTH + RUN</span>
-          </header>
+          <button class="card-head" type="button" data-toggle="exercise" aria-expanded="false">
+            <span class="card-head-text">
+              <h2>Exercise</h2>
+              <span class="card-eyebrow mono">STRENGTH + RUN</span>
+            </span>
+            <span class="card-summary mono" id="summary-inline-exercise">—</span>
+            <span class="card-chevron" aria-hidden="true">⌄</span>
+          </button>
           <div class="card-body">
 
             <div class="trend-panel" id="trend-exercise">
@@ -116,12 +118,16 @@
         </article>
 
         <!-- READING -->
-        <article class="card" data-accent="reading">
+        <article class="card is-collapsed" data-accent="reading">
           <div class="card-edge"></div>
-          <header class="card-head">
-            <h2>Reading</h2>
-            <span class="card-eyebrow mono">PAGES</span>
-          </header>
+          <button class="card-head" type="button" data-toggle="reading" aria-expanded="false">
+            <span class="card-head-text">
+              <h2>Reading</h2>
+              <span class="card-eyebrow mono">PAGES</span>
+            </span>
+            <span class="card-summary mono" id="summary-inline-reading">—</span>
+            <span class="card-chevron" aria-hidden="true">⌄</span>
+          </button>
           <div class="card-body">
             <div class="readout-row">
               <div class="readout">
@@ -129,7 +135,6 @@
                 <span class="readout-label">pages today</span>
               </div>
             </div>
-
             <div class="trend-panel" id="trend-reading">
               <div class="trend-title mono">THIS WEEK VS LAST</div>
               <div class="trend-rows" id="trend-rows-reading"></div>
@@ -147,12 +152,16 @@
         </article>
 
         <!-- WRITING -->
-        <article class="card" data-accent="writing">
+        <article class="card is-collapsed" data-accent="writing">
           <div class="card-edge"></div>
-          <header class="card-head">
-            <h2>Writing</h2>
-            <span class="card-eyebrow mono">WORDS</span>
-          </header>
+          <button class="card-head" type="button" data-toggle="writing" aria-expanded="false">
+            <span class="card-head-text">
+              <h2>Writing</h2>
+              <span class="card-eyebrow mono">WORDS</span>
+            </span>
+            <span class="card-summary mono" id="summary-inline-writing">—</span>
+            <span class="card-chevron" aria-hidden="true">⌄</span>
+          </button>
           <div class="card-body">
             <div class="readout-row">
               <div class="readout">
@@ -160,7 +169,6 @@
                 <span class="readout-label">words today</span>
               </div>
             </div>
-
             <div class="trend-panel" id="trend-writing">
               <div class="trend-title mono">THIS WEEK VS LAST</div>
               <div class="trend-rows" id="trend-rows-writing"></div>
@@ -178,12 +186,16 @@
         </article>
 
         <!-- SMOKING -->
-        <article class="card" data-accent="smoking">
+        <article class="card is-collapsed" data-accent="smoking">
           <div class="card-edge"></div>
-          <header class="card-head">
-            <h2>Smoking</h2>
-            <span class="card-eyebrow mono">CIGARETTES</span>
-          </header>
+          <button class="card-head" type="button" data-toggle="smoking" aria-expanded="false">
+            <span class="card-head-text">
+              <h2>Smoking</h2>
+              <span class="card-eyebrow mono">CIGARETTES</span>
+            </span>
+            <span class="card-summary mono" id="summary-inline-smoking">—</span>
+            <span class="card-chevron" aria-hidden="true">⌄</span>
+          </button>
           <div class="card-body">
             <div class="readout-row">
               <div class="readout">
@@ -217,12 +229,16 @@
         </article>
 
         <!-- ONANISM -->
-        <article class="card" data-accent="onanism">
+        <article class="card is-collapsed" data-accent="onanism">
           <div class="card-edge"></div>
-          <header class="card-head">
-            <h2>Self-Control</h2>
-            <span class="card-eyebrow mono">REDUCTION GOAL</span>
-          </header>
+          <button class="card-head" type="button" data-toggle="onanism" aria-expanded="false">
+            <span class="card-head-text">
+              <h2>Self-Control</h2>
+              <span class="card-eyebrow mono">REDUCTION GOAL</span>
+            </span>
+            <span class="card-summary mono" id="summary-inline-onanism">—</span>
+            <span class="card-chevron" aria-hidden="true">⌄</span>
+          </button>
           <div class="card-body">
             <div class="readout-row">
               <div class="readout">
@@ -249,12 +265,16 @@
         </article>
 
         <!-- LOVE -->
-        <article class="card" data-accent="chastity">
+        <article class="card is-collapsed" data-accent="chastity">
           <div class="card-edge"></div>
-          <header class="card-head">
-            <h2>Love</h2>
-            <span class="card-eyebrow mono">WEEKLY GOAL</span>
-          </header>
+          <button class="card-head" type="button" data-toggle="chastity" aria-expanded="false">
+            <span class="card-head-text">
+              <h2>Love</h2>
+              <span class="card-eyebrow mono">WEEKLY GOAL</span>
+            </span>
+            <span class="card-summary mono" id="summary-inline-chastity">—</span>
+            <span class="card-chevron" aria-hidden="true">⌄</span>
+          </button>
           <div class="card-body">
             <div class="readout-row">
               <div class="readout">

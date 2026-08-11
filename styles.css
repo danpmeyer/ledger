@@ -116,25 +116,6 @@ button:focus-visible, input:focus-visible, select:focus-visible{
 /* ============================================================
    THEME TOGGLE (floating button)
    ============================================================ */
-.theme-fab{
-  position: fixed;
-  top: max(14px, env(safe-area-inset-top));
-  right: 14px;
-  z-index: 30;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  color: var(--text);
-  font-size: 17px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: var(--card-shadow);
-}
-.theme-fab:hover{ border-color: var(--text-dim); }
-
 .theme-switch-group{ display:flex; gap: 10px; }
 .theme-opt{
   background: var(--surface-2);
@@ -308,8 +289,22 @@ button:focus-visible, input:focus-visible, select:focus-visible{
 .card-head{
   display:flex;
   justify-content: space-between;
-  align-items: baseline;
-  padding: 18px 20px 0;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: inherit;
+  text-align: left;
+  padding: 16px 20px;
+  min-height: 44px;
+}
+.card-head:hover{ background: var(--surface-2); }
+.card-head-text{
+  display:flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
 }
 .card-head h2{ font-size: 16px; }
 .card-eyebrow{
@@ -317,8 +312,37 @@ button:focus-visible, input:focus-visible, select:focus-visible{
   letter-spacing: 0.1em;
   color: var(--text-faint);
 }
+.card-summary{
+  font-size: 13px;
+  color: var(--text-dim);
+  white-space: nowrap;
+  margin-left: auto;
+}
+.card-chevron{
+  font-size: 14px;
+  color: var(--text-faint);
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+.card.is-collapsed .card-chevron{ transform: rotate(-90deg); }
 
-.card-body{ padding: 14px 20px 20px; }
+.card-body{
+  overflow: hidden;
+  max-height: 900px;
+  opacity: 1;
+  transition: max-height 0.25s ease, opacity 0.2s ease;
+}
+.card.is-collapsed .card-body{
+  max-height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+.card:not(.is-collapsed) .card-body{
+  padding: 0 20px 20px;
+}
+.card.is-collapsed .card-body{
+  padding: 0 20px;
+}
 
 .card-note{
   color: var(--text-dim);
@@ -684,11 +708,10 @@ button:focus-visible, input:focus-visible, select:focus-visible{
   .content{ padding: 22px 16px calc(96px + env(safe-area-inset-bottom)); }
 
   .view-head{ align-items: flex-start; }
-
-  .theme-fab{ width: 38px; height: 38px; }
 }
 
 @media (max-width: 420px){
   .readout-row{ flex-wrap: wrap; }
   .quick-actions .btn-quick{ flex: 1; text-align: center; }
+  .card-summary{ display: none; }
 }

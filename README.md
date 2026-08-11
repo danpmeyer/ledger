@@ -9,7 +9,7 @@ is sent anywhere. Back it up regularly from the **Settings** tab.
 - `index.html` — structure
 - `styles.css` — the ledger/instrument-panel design system, light + dark
 - `app.js` — all logic: storage, rendering, trends, stats, charts, import/export
-- `favicon.svg` — the browser-tab icon (a "§" mark over five accent ticks, one per habit); auto-switches for OS light/dark mode
+- `favicon.svg` — the browser-tab icon: a color wheel showing all six habit accent colors as wedges; auto-switches its background for OS light/dark mode
 - `favicon-16.png`, `favicon-32.png` — PNG fallbacks for browsers that don't support SVG favicons
 - `apple-touch-icon.png` — the icon iOS uses when you Add to Home Screen
 - `icon-512.png` — a larger PNG version, handy if you ever add a web app manifest for a proper installable PWA
@@ -37,9 +37,15 @@ all number inputs use the phone's numeric keypad automatically.
 
 ## Theme
 
-The moon/sun button in the top-right corner toggles dark and light mode
-anywhere in the app; the same control also lives in **Settings → Appearance**.
-Your choice is saved on that device and re-applied on next visit.
+Switch dark and light mode from **Settings → Appearance**. Your choice is
+saved on that device and re-applied on next visit.
+
+## Habit cards
+
+Each habit card on the Today tab starts collapsed, showing just its name and
+an at-a-glance number (pages today, days since last, etc.). Tap anywhere on
+the header to expand it and log an entry; tap again to collapse. This keeps
+the Today screen scannable instead of showing five forms at once.
 
 ## Data model
 
